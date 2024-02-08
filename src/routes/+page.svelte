@@ -1,6 +1,4 @@
 <script>
-  import img from "$lib/assets/painting-mountain-lake-with-mountain-background.jpg"
-
   import { onMount } from 'svelte';
   let date = new Date();
   let daysInMonth;
