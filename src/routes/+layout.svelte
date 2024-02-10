@@ -13,6 +13,7 @@
     --Color-Sat-blue: #4285F4;
 
     --gap: 5px;
+    --border-radius: 20px;
 
     color: var(--bw-white);
 
@@ -22,7 +23,7 @@
     font-size: 150%; /* 24px equivalent */
 
     --h1: 1.6667rem;
-    --h2: 1.25rem;
+    --h2: 1rem;
   }
 
   :global(body) {

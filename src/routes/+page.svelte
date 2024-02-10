@@ -1,5 +1,13 @@
 <script>
   import { onMount } from 'svelte';
+
+  let showOverlay = false;
+
+  let startDate = null;
+  let startTime = null;
+  let endDate = null;
+  let endTime = null;
+
   let date = new Date();
   let daysInMonth;
   let month;
@@ -38,7 +46,7 @@
       </h1>
       <nav>
         <button>
-          <enhanced:img src="$lib/assets/hamburger_menu.svg" alt="An alt text" />
+          <enhanced:img src="$lib/assets/hamburger_menu.svg" alt="Åpne meny" />
         </button>
       </nav>
     </div>
@@ -82,7 +90,52 @@
     </div>
 
   </div>
+
+  <button on:click={() => showOverlay = !showOverlay} class="add_event_button">
+    <enhanced:img src="$lib/assets/add_FILLF1F1F1_wght400_GRAD0_opsz24.svg" alt="Legg til Aktivitet"/>
+  </button>
 </main>
+
+<div class="all_overlays">
+<section class="add_event_overlay" class:active={showOverlay}>
+  
+  <input type="text" placeholder="Tittel">
+
+  
+  <div>
+    <fieldset class="all_day_container">
+    <label>
+
+      <span class="label">Hele dagen</span>
+
+      <input type="checkbox" role="switch">
+
+      <span class="state">
+        <span class="container">
+          <span class="position"> </span>
+        </span>
+      </span>
+
+    </label>
+  </fieldset>
+  
+  <input type="date" placeholder="I dag" />
+  <input type="time" value="00:00" />
+  
+  <input type="date" placeholder="I dag" />
+  <input type="time" value="00:00" /> 
+</div>
+
+<div class="location_input"><enhanced:img src="$lib/assets/Pin.svg" alt=""/> <input placeholder="Adresse" type="text"></div>
+
+
+
+</section>
+</div>
+
+<footer>
+
+</footer>
 
 <style>
   @import "../reset.css";
@@ -93,10 +146,19 @@
     align-items: center;
     background-color: var(--Primary-Colors-primary);
     box-shadow: 0px 5px 5px 0px #0000004D;
-    margin-bottom: 10px;
-    border-radius: 20px;
+    border-radius: var(--border-radius);
     gap: 20px;
-    padding:  57px 10px 24px 10px;
+    padding: 24px 10px 24px 10px;
+  }
+
+  .month {
+    font-size: var(--h1);
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
   }
 
   .day_indicator {
@@ -112,14 +174,10 @@
     justify-content: space-between;
   }
 
-  main {
-    display: flex;
-    justify-content: center;
-  }
-
   .calendar {
     display: flex;
     gap: var(--gap);
+    justify-content: center;
   }
 
   .weeks {
@@ -129,6 +187,7 @@
     height: 100%;
     justify-content: space-between;
     width: fit-content;
+    gap: var(--gap);
   }
 
   .days {
@@ -158,4 +217,132 @@
     color: var(--Color-Sat-red);
     border: 1px solid var(--Color-Sat-red);
   }
+
+  .add_event_button {
+    margin-left: auto;
+    height: 49px;
+    width: 49px;
+    background-color: var(--Primary-Colors-secondary);
+    box-shadow: 0px 5px 5px 0px #0000004D;
+    border-radius: 100vmax;
+    padding: 5px;
+  }
+
+  .add_event_button img {
+    height: 100%;
+    width: 100%;
+  }
+
+  .all_overlays {
+    pointer-events: none;
+    overflow-y: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .all_overlays > * {
+    min-height: 100%;
+    max-height: 100%;
+    overflow: auto;
+  }
+  .all_overlays * {
+    pointer-events: all;
+  }
+
+  .add_event_overlay {
+    position: absolute;
+    top: 100vh;
+    left: 0;
+    display: flex;
+    visibility: hidden;
+    flex-direction: column;
+    gap: var(--gap);
+    background-color: var(--Primary-Colors-secondary);
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    padding: 24px 10px 24px 10px;
+    transition: top 0.3s ease, visibility 0s ease 0.3s;
+  }
+
+  .add_event_overlay.active {
+    visibility: visible;
+    top: 0;
+    transition: top 0.3s ease, visibility 0s ease;
+  }
+
+  .add_event_overlay * {
+    color: var(--bw-white);
+  }
+  .add_event_overlay > * {
+    min-height: 73px;
+    background-color: var(--Primary-Colors-primary);
+    border-radius: var(--border-radius);
+    padding: 20px 10px 20px 10px;
+    width: 100%;
+    box-shadow: 0px 5px 5px 0px #0000004D;
+  }
+
+  .add_event_overlay input {
+    font-size: var(--h2);
+  }
+  ::placeholder {
+    color: var(--bw-white);
+  }
+
+  .all_day_container label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .all_day_container label input[role="switch"] {
+    opacity: 0;
+  }
+
+  .all_day_container label input[role="switch"] ~ .state {
+    display: inline-block;
+    user-select: none;
+  }
+
+  .all_day_container label input[role="switch"] ~ .state > .container {
+    position: relative;
+    background-color: var(--Primary-Colors-secondary);
+    top: 2px;
+    display: inline-block;
+    width: 51px;
+    height: 29px;
+    border-radius: 100vmax;
+    box-shadow: 0px 5px 5px 0px #0000004D;
+    transition: background-color 0.3s ease;
+  }
+
+  .all_day_container label input[role="switch"]:checked ~ .state > .container {
+    background-color: var(--Color-Sat-green);
+  }
+
+  .all_day_container label input[role="switch"] ~ .state > .container > .position {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: block;
+    border-radius: 100vmax;
+    width: 29px;
+    height: 29px;
+    background: var(--bw-white);
+    transition: left 0.3s ease;
+  }
+
+  .all_day_container label input[role="switch"]:checked ~ .state > .container > .position {
+    left: calc(100% - 29px);
+  }
+
+  .location_input {
+    display: flex;
+    gap: 20px;
+  }
+
 </style>
